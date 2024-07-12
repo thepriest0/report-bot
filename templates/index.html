@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Report Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #status {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>TikTok Report Bot</h1>
+    <form id="reportForm">
+        <label for="profileLink">Profile Link:</label><br>
+        <input type="text" id="profileLink" name="profileLink" value="https://www.tiktok.com/@maliwatts08?lang=en"><br>
+        <label for="numReports">Number of Reports:</label><br>
+        <input type="number" id="numReports" name="numReports" value="10"><br><br>
+        <button type="submit">Send Reports</button>
+    </form>
+
+    <div id="status"></div>
+
+    <script>
+        document.getElementById("reportForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let profileLink = document.getElementById("profileLink").value;
+            let numReports = document.getElementById("numReports").value;
+
+            fetch('/send_reports', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ profileLink, numReports })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").innerText = data.status;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
